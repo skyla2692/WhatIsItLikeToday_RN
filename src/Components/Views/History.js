@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import IMGBG from '../../Images/HistoryBg.jpg';
 
-export default class HabitTracker extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
+export default function History(){
+  return(
+    <View style={styles.container}>
+      <ImageBackground source={IMGBG} style={styles.image}>
         <View style={styles.calendar}>
           <Text>Calendar</Text>
         </View>
         <View style={styles.toDoList}>
           <Text>Montly To Do List</Text>
         </View>
-      </View>
-    );
-  }
+      </ImageBackground>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -23,12 +24,18 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
 
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
+
   calendar: {
     flex: 6,
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "tomato",
+    borderBottomWidth: 1,
+    //backgroundColor: "tomato",
   },
 
   toDoList: {
@@ -36,6 +43,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'orange',
+    //backgroundColor: 'orange',
   },
 });

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import IMGBG from '../../Images/DiaryBg.jpg';
 
-export default class Diary extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
+export default function Diary(){
+  return (
+    <View style={styles.container}>
+      <ImageBackground source={IMGBG} style={styles.image}>
         <View style={styles.date}>
           <Text>Date</Text>
         </View>
@@ -14,9 +15,9 @@ export default class Diary extends Component {
         <View style={styles.mood}>
           <Text>Mood Sticker</Text>
         </View>
-      </View>
-    );
-  }
+      </ImageBackground>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -26,12 +27,19 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
 
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
+
   date: {
     flex: 0.7,
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "tomato",
+    borderBottomWidth: 1,
+    //backgroundColor: "tomato",
   },
 
   diary: {
@@ -39,7 +47,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'orange',
+    borderBottomWidth: 1,
+    //backgroundColor: 'orange',
   },
 
   mood: {
@@ -47,7 +56,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "teal",
+    //backgroundColor: "teal",
   },
 
 });

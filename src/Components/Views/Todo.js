@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import IMGBG from '../../Images/ToDoBg.jpg';
 
-export default class ToDo extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
+export default function ToDo(){
+  return (
+    <View style={styles.container}>
+      <ImageBackground source={IMGBG} style={styles.image}>
         <View style={styles.date}>
           <Text>Date</Text>
         </View>
@@ -14,9 +15,9 @@ export default class ToDo extends Component {
         <View style={styles.percentage}>
           <Text>Percentage</Text>
         </View>
-      </View>
-    );
-  }
+      </ImageBackground>
+    </View>
+  );
 }
 
 
@@ -27,12 +28,19 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
 
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
+
   date: {
     flex: 0.7,
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "tomato",
+    borderBottomWidth: 1,
+    //backgroundColor: "tomato",
   },
 
   toDo: {
@@ -40,7 +48,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'orange',
+    borderBottomWidth: 1,
+    //backgroundColor: 'orange',
   },
 
   percentage: {
@@ -48,6 +57,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "teal",
+    //backgroundColor: "teal",
   },
 });

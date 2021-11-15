@@ -4,10 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import Weather from './Components/TabNavigator/Weather';
-import ToDo from './Components/TabNavigator/ToDo';
-import Diary from './Components/TabNavigator/Diary';
-import History from './Components/TabNavigator/History';
+import Weather from './src/Components/Views/Weather';
+import ToDo from './src/Components/Views/Todo';
+import Diary from './src/Components/Views/Diary';
+import History from './src/Components/Views/History';
 
 export default function App() {
   const Tab = createBottomTabNavigator();
