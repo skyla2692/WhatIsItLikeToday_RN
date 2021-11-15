@@ -1,4 +1,4 @@
 export const weatherTheme = {
-    bg: "black",
-    border: "grey",
+    weeklyBorder: "#696969",    // dimgrey
+    border: "#2f4f4f",  // darkslategrey
 };

@@ -2,6 +2,8 @@ import * as Location from 'expo-location';
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, Text, View, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
 import { Fontisto } from '@expo/vector-icons';
+import Unorderedlist from 'react-native-unordered-list';
+
 import { weatherTheme } from '../ThemeColor';
 import IMGBG from '../../Images/WeatherBg.jpg';
 
@@ -94,15 +96,18 @@ export default function Weather() {
                   <View key={index} style={styles.currentIcon}>
                     <Text style={styles.currentTemp}>{parseFloat(current.temp).toFixed(1)}°C</Text>
                     <View style={styles.currentDescriptionBox}>
-                        <Fontisto name={icons[current.weather[0].main]} size={56} color="black" style={{marginTop: 20}}/> 
+                        <Fontisto name={icons[current.weather[0].main]} size={65} color="black" style={{ marginTop: 20 }}/> 
                         <Text style={styles.currentDescription}>{current.weather[0].main}</Text>
                     </View>
                   </View>
                   )}
                   <View style={styles.currMaxMin}>
-                    <Text style={styles.currMM}>{parseFloat(days[0].temp.max).toFixed(0)}°C</Text>
-                    <Text style={styles.currMM}>/</Text>
-                    <Text style={styles.currMM}>{parseFloat(days[0].temp.min).toFixed(0)}°C</Text>
+                    <Unorderedlist bulletUnicode={0x2022} style={{ fontSize: 23 }}>
+                    <Text style={styles.currMM}>MAX : {parseFloat(days[0].temp.max).toFixed(0)}°C</Text>
+                    </Unorderedlist>
+                    <Unorderedlist bulletUnicode={0x2022} style={{ fontSize: 23 }}>
+                      <Text style={styles.currMM}>MIN : {parseFloat(days[0].temp.min).toFixed(0)}°C</Text>
+                    </Unorderedlist>
                   </View>
               </View>
             </View>
@@ -143,8 +148,6 @@ export default function Weather() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 5,
-    marginVertical: 5,
   },
   loading: {
     width: SCREEN_WIDTH,
@@ -170,6 +173,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderBottomWidth: 1,
+    borderColor: weatherTheme.border,
     //backgroundColor: "tomato",
   },
   cityText: {
@@ -186,11 +190,12 @@ const styles = StyleSheet.create({
   },
 
   daily: {
-    flex: 2.5,
+    flex: 2.8,
     paddingVertical: 10,
     alignItems: "center",
     justifyContent: "center",
     borderBottomWidth: 1,
+    borderColor: weatherTheme.border,
     //backgroundColor: "orange"
   },
   currentStatus: {
@@ -198,7 +203,7 @@ const styles = StyleSheet.create({
   },
   currentIcon: {
     width: SCREEN_WIDTH,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -216,27 +221,25 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   currMaxMin: {
-    flexDirection: "row",
-    width: "70%",
     marginTop: -20,
     marginBottom: 15,
-    paddingHorizontal: 40,
-    alignItems: "center",
-    justifyContent: 'space-around',
+    paddingHorizontal: 30,
+    alignItems: "flex-start",
   },
   currMM: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: '500',
   },
 
   hourBox: {
-    flex: 2,
+    flex: 1.8,
   },
   hourly: {
     flexDirection: "row",
     paddingVertical: 10,
-    borderBottomWidth: 1,
     alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: weatherTheme.border,
     //backgroundColor: "teal",
   },
   everyHour: {
@@ -273,7 +276,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderColor: weatherTheme.border,
+    borderColor: weatherTheme.weeklyBorder,
   },
   date: {
     fontSize: 24,

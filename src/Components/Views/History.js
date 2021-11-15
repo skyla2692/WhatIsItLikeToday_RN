@@ -20,8 +20,6 @@ export default function History(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 5,
-    marginVertical: 5,
   },
 
   image: {
