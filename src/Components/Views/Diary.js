@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View, TextInput, Dimensions, Button, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import IMGBG from '../../Images/DiaryBg.jpg';
 
 import { diaryTheme } from '../ThemeColor';
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const SIZE = 30;
+
+const STORAGE_KEY = "@dailyLog";
 
 const mon = {
   "0" : "JAN",
@@ -24,16 +27,50 @@ const mon = {
 };
 
 export default function Diary(){
-  const [text, setText] = useState("");    // will be saving what user wrote in TextInput
+  const [text, setText] = useState("");
   const [mood, setMood] = useState("");
-  const [diary, setDiary] = useState({});
-  const onChangeText = (payload) => setText(payload);
-  const onChangeMood = () => setMood();
-  const onPressSubmit = () => setDiary();
+  const [diary, setDiary] = useState("");
+  const [dailyLog, setDailyLog] = useState({});
+  const [todaySave, setTodaySave] = useState(false);
 
   const today = new Date();
   const month = today.getMonth();
   const date = today.getDate();
+
+  const onChangeText = (payload) => setText(payload);
+  const onChangeMood = (sticker) => setMood(sticker);
+  const dismissKeyboard = () => Keyboard.dismiss();
+
+  const saveLog = async(toSave) => {
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+  };
+
+  const addDiary = () => {
+    if(text === ""){
+      return
+    }
+    setDiary(text);
+  };
+
+  const onPressSave = async() => {
+    Alert.alert(
+      "Are you sure?",
+      "Save your daily diary?", [
+        { text: "Cancel" },
+        { text: "Yes",
+          onPress: () => {
+            const newDailyLog = {
+              ...dailyLog,
+              [today] : { diary, mood },
+            };
+            setDailyLog(newDailyLog);
+            saveLog(newDailyLog);
+            setTodaySave(true);
+          }
+        },
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -43,49 +80,205 @@ export default function Diary(){
         </View>
 
         <View style={styles.diary}>
-          <TextInput
-            onChangeText={onChangeText}
-            returnKeyType="done"
-
-            value={text}
-            placeholder={"Write about your day! Word or sentence is good enough for your daily log. Just Write!"}
-            multiline={true}
-            style={styles.input}/>
+          {( !todaySave ) ? (
+          <View style={styles.inputBox}>
+            <TextInput
+              onChangeText={onChangeText}
+              value={text}
+              placeholder={"Write about your day! Word or sentence is good enough for your daily log. Just Write!"}
+              multiline={true}
+              style={styles.input} />
+              <TouchableOpacity onPress={addDiary} onPressOut={dismissKeyboard} style={styles.textBtn}>
+                <Text style={styles.DoneText}>Done</Text>
+              </TouchableOpacity>
+          </View>
+          ) : (
+          <View style={styles.inputBox}>
+            <TextInput
+              editable={false}
+              onChangeText={onChangeText}
+              value={text}
+              placeholder={"Write about your day! Word or sentence is good enough for your daily log. Just Write!"}
+              multiline={true}
+              style={styles.input} />
+              <TouchableOpacity onPress={addDiary} onPressOut={dismissKeyboard} style={styles.textBtn}>
+                <Text style={styles.DoneText}>Done</Text>
+              </TouchableOpacity>
+          </View>
+          )}
         </View>
 
         <View style={styles.mood}>
           <Text style={styles.moodText}>Select a Mood Sticker!</Text>
           <View style={styles.moodBox}>
-            <TouchableOpacity onPress={onChangeMood}>
-              <FontAwesome5 name="laugh-squint" size={SIZE} color="black" />
+            {(!todaySave) ? (
+            <TouchableOpacity
+              onPress={() => onChangeMood("Excited")}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Excited") ? (
+                <FontAwesome5 name="laugh-squint" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="laugh-squint" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesome5 name="smile" size={SIZE} color="black" />
+            ) : (
+            <TouchableOpacity
+              onPress={dismissKeyboard}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Excited") ? (
+                <FontAwesome5 name="laugh-squint" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="laugh-squint" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesome5 name="meh" size={SIZE} color="black" />
+            )}
+
+            {(!todaySave) ? (
+            <TouchableOpacity
+              onPress={() => onChangeMood("Good")}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Good") ? (
+                <FontAwesome5 name="smile" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="smile" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesome5 name="frown" size={SIZE} color="black" />
+            ) : (
+            <TouchableOpacity
+              onPress={dismissKeyboard}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Good") ? (
+                <FontAwesome5 name="smile" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="smile" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesome5 name="sad-tear" size={SIZE} color="black" />
+            )}
+
+            { (!todaySave) ? (
+            <TouchableOpacity
+              onPress={() => onChangeMood("Meh")}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Meh") ? (
+                <FontAwesome5 name="meh" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="meh" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesome5 name="angry" size={SIZE} color="black" />
+            ) : (
+            <TouchableOpacity
+              onPress={dismissKeyboard}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Meh") ? (
+                <FontAwesome5 name="meh" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="meh" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesome5 name="kiss-wink-heart" size={SIZE} color="black" />
+            )}
+
+            { (!todaySave) ? (
+            <TouchableOpacity
+              onPress={() => onChangeMood("Bad")}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Bad") ? (
+                <FontAwesome5 name="frown" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="frown" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
             </TouchableOpacity>
+            ) : (
+            <TouchableOpacity
+              onPress={dismissKeyboard}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Bad") ? (
+                <FontAwesome5 name="frown" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="frown" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
+            </TouchableOpacity>
+            )}
+
+
+            { (!todaySave) ? (
+            <TouchableOpacity
+              onPress={() => onChangeMood("Sad")}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Sad") ? (
+                <FontAwesome5 name="sad-tear" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="sad-tear" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
+            </TouchableOpacity>
+            ) : (
+            <TouchableOpacity
+              onPress={dismissKeyboard}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Sad") ? (
+                <FontAwesome5 name="sad-tear" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="sad-tear" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
+            </TouchableOpacity>
+            )}
+
+            { (!todaySave) ? (
+            <TouchableOpacity
+              onPress={() => onChangeMood("Angry")}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Angry") ? (
+                <FontAwesome5 name="angry" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="angry" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
+            </TouchableOpacity>
+            ) : (
+            <TouchableOpacity
+              onPress={dismissKeyboard}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "Angry") ? (
+                <FontAwesome5 name="angry" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="angry" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
+            </TouchableOpacity>
+            )}
+
+            { (!todaySave) ? (
+            <TouchableOpacity
+              onPress={() => onChangeMood("In Love")}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "In Love") ? (
+                <FontAwesome5 name="kiss-wink-heart" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="kiss-wink-heart" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
+            </TouchableOpacity>
+            ) : (
+            <TouchableOpacity
+              onPress={dismissKeyboard}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }} >
+              {(mood === "In Love") ? (
+                <FontAwesome5 name="kiss-wink-heart" size={SIZE+5} color={diaryTheme.moodSelect} />
+              ) : (
+                <FontAwesome5 name="kiss-wink-heart" size={SIZE} color={diaryTheme.moodBasic} />
+              )}
+            </TouchableOpacity>
+            )}
           </View>
         </View>
 
         <View style={styles.submit}>
-          <TouchableOpacity onPress={onPressSubmit} style={styles.submitPress}>
-            <Text style={styles.submitText}>Save</Text>
+          { (!todaySave) ? (
+          <TouchableOpacity onPress={onPressSave} style={styles.submitPress}>
+            <Text style={styles.submitText}>Save ✓</Text>
           </TouchableOpacity>
+          ) : (
+          <TouchableOpacity style={styles.submitPress}>
+            <Text style={styles.submitText}>Save ✓</Text>
+          </TouchableOpacity>
+          )}
         </View>
-        
       </ImageBackground>
     </View>
   );
@@ -107,7 +300,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginLeft: 10,
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     borderBottomWidth: 1,
     //backgroundColor: "tomato",
   },
@@ -118,20 +311,35 @@ const styles = StyleSheet.create({
 
   diary: {
     flex: 7,
-    paddingVertical: 5,
     alignItems: 'center',
-    borderBottomWidth: 1,
     //backgroundColor: 'orange',
   },
+  inputBox: {
+    alignItems: "flex-end",
+  },
   input: {
-    height: "50%",
+    minHeight: "40%",
+    minWidth: SCREEN_WIDTH-10,
     backgroundColor: "white",
-    opacity: 0.85,
-    paddingVertical: 15,
+    textAlignVertical: "top",
+    paddingVertical: 20,
     paddingHorizontal: 20,
-    marginVertical: 20,
-    borderRadius: 20,
+    marginVertical: 10,
+    borderRadius: 30,
+    opacity: 0.85,
     fontSize: 18,
+  },
+  textBtn: {
+    margin: 10,
+    alignItems: "center",
+    backgroundColor: diaryTheme.diaryText,
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  DoneText: {
+    fontSize: 18,
+    fontWeight: "400",
   },
 
   mood: {

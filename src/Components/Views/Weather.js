@@ -2,6 +2,7 @@ import * as Location from 'expo-location';
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, Text, View, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
 import { Fontisto } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Unorderedlist from 'react-native-unordered-list';
 
 import { weatherTheme } from '../ThemeColor';

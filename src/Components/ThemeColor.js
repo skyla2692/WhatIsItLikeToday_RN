@@ -4,6 +4,10 @@ export const weatherTheme = {
 };
 
 export const diaryTheme = {
+    diaryText: "#ffefd5",   // papayawhip
+    diarySubmit: "#808000",    // olive
+    moodBasic: "#778899",   // lightslategray
+    moodSelect: "#000000",  // black
     moodBg: "#dcdcdc",     // gainsboro
     diarySubmit: "#ffe4c4",  // bisque
 };

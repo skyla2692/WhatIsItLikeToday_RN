@@ -8,5 +8,8 @@ This is an application with four functions.
 
 ## Document Citations (Click on the word to check the link)
 Weather Page : [Weather_API](https://openweathermap.org/api/one-call-api) <br>
-React Native : [Unordered_List](https://www.npmjs.com/package/react-native-unordered-list) <br>
+React Native
+- [Unordered_List](https://www.npmjs.com/package/react-native-unordered-list) <br>
+- [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) <br>
+
 Background Images : [Unsplash](https://unsplash.com/) <br>
