@@ -9,3 +9,6 @@
 - Weather Tab UI & function fully managed.
 - Background image added for all bottom tabs.
 - File structure remanaged.
+
+## 2021.11.16.
+- Diary Tab UI & function almost fully managed.
