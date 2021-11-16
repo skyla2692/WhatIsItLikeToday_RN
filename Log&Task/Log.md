@@ -12,3 +12,4 @@
 
 ## 2021.11.16.
 - Diary Tab UI & function almost fully managed.
+- To Do Tab UI & function at least more than 50% managed.

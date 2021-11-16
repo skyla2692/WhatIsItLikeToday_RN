@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -41,8 +41,25 @@ export default function Diary(){
   const onChangeMood = (sticker) => setMood(sticker);
   const dismissKeyboard = () => Keyboard.dismiss();
 
+  useEffect(() => {
+    loadLogs();
+  }, []);
+
   const saveLog = async(toSave) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+  };
+
+  const loadLogs = async() => {
+    try{
+      const s = await AsyncStorage.getItem(STORAGE_KEY);
+      if(s){
+        setDailyLog(JSON.parse(s));
+      }
+    }
+    catch(e){
+      Alert.alert("Error", "Todo Function not loaded!");
+      console.log(e);
+    }
   };
 
   const addDiary = () => {

@@ -40,7 +40,7 @@ export default function Weather() {
   const [days, setDays] = useState([]);
 
   useEffect(() => {
-      getWeather();
+    getWeather();
   }, []);
 
   const getWeather = async() => {
