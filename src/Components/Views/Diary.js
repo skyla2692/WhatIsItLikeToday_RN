@@ -57,7 +57,7 @@ export default function Diary(){
       }
     }
     catch(e){
-      Alert.alert("Error", "Todo Function not loaded!");
+      Alert.alert("Error", "Diary Function not loaded!");
       console.log(e);
     }
   };
@@ -71,11 +71,12 @@ export default function Diary(){
 
   const onPressSave = async() => {
     Alert.alert(
-      "Are you sure?",
-      "Save your daily diary?", [
+      "Save your daily diary?",
+      "You can't change today's diary after you save it.", [
         { text: "Cancel" },
         { text: "Yes",
           onPress: () => {
+            Alert.alert("Saved");
             const newDailyLog = {
               ...dailyLog,
               [today] : { diary, mood },
