@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ImageBackground, Alert, Dimensions, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import IMGBG from '../../Images/ToDoBg.jpg';
 import { toDoTheme } from '../ThemeColor';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -27,7 +28,6 @@ const STORAGE_KEY = "@toDos";
 export default function ToDo(){
   const [text, setText] = useState("");
   const [toDos, setToDos] = useState({});
-  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
     loadToDos();
@@ -39,20 +39,17 @@ export default function ToDo(){
 
   const onChangeText = (payload) => setText(payload);
 
-  const check = () => setCompleted(true);
-  const uncheck = () => setCompleted(false);
+  const handleCheck = (key) => {
+    if (toDos[key].checked === false) {
+      toDos[key] = { ...toDos[key], checked: true };
+    } else {
+      toDos[key] = { ...toDos[key], checked: false };
+    }
+    const newToDos = { ...toDos, [key]: toDos[key] };
 
-  const onPressCompleted = (data) => {
-    if(data.completed === false){
-      check();
-    }
-    else if(data.completed === true){
-      uncheck();
-    }
-    // newData.completed = !newData.completed;
-    // setCompleted(newData.completed);
-    // console.log(newData.completed)
-  }
+    setToDos(newToDos);
+    saveToDos(newToDos);
+  };
 
   const saveToDos = async(toSave) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
@@ -77,29 +74,11 @@ export default function ToDo(){
     }
     const newToDos = {
       ...toDos,
-      [Date.now()] : { text, completed },
+      [Date.now()] : { text, checked: false },
     };
     setToDos(newToDos);
     await saveToDos(newToDos);
     setText("");
-  };
-  
-  const editToDo = (key) => {
-    const newToDos = { ...toDos };
-    const beforeToDo = newToDos[key].text;
-    newToDos[key].text = text;
-    setToDos(newToDos);
-    console.log("Edit: ", newToDos);
-
-    return(
-      <TextInput
-        onSubmitEditing={ addToDo }
-        onChangeText={ onChangeText }
-        returnKeyType="done"
-        value={ text }
-        placeholder={ beforeToDo }
-        style={{ ...styles.addToDo, backgroundColor: "white" }} />
-    )
   };
 
   const deleteToDo = (key) => {
@@ -148,33 +127,17 @@ export default function ToDo(){
             style={ styles.addToDo } />
 
           <ScrollView>
-            {Object.keys(toDos).map((key) =>
-              toDos[key].completed === completed ? (
+            {toDos && Object.keys(toDos).map((key) =>
               <View key={key} style={styles.toDo}>
-                <TouchableOpacity
-                  onPress={() => onPressCompleted(toDos[key])}
-                  hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
-                  style={{ ...styles.icons, marginRight: 10}} >
-                  <MaterialCommunityIcons name="checkbox-marked-outline" size={20} color={toDoTheme.checkBox} />
-                </TouchableOpacity>
-                <Text style={{ ...styles.toDoText, textDecorationLine: "line-through", marginHorizontal: 10}}>{toDos[key].text}</Text>
-              </View>
-              ) : (
-              <View key={key} style={styles.toDo}>
-                <TouchableOpacity
-                  onPress={() => onPressCompleted(toDos[key])}
-                  hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
-                  style={{ ...styles.icons, marginRight: 10}} >
-                  <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color={toDoTheme.checkBox} />
-                </TouchableOpacity>
+                <BouncyCheckbox
+                  isChecked={toDos[key].checked}
+                  onPress={() => handleCheck(key)}
+                  size={20}
+                  iconStyle={{ borderColor: "black" }}
+                  fillColor="black"
+                  />
                 <Text style={{ ...styles.toDoText, marginHorizontal: 10}}>{toDos[key].text}</Text>
                 <View style={styles.icons}>
-                  <TouchableOpacity
-                    onPress={() => editToDo(key)}
-                    hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
-                    style={{ ...styles.icons, marginRight: 10}} >
-                    <Feather name="edit-3" size={20} color={toDoTheme.editIcon} />
-                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => deleteToDo(key)}
                     hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
@@ -183,18 +146,13 @@ export default function ToDo(){
                 </View>
               </View>
               )
-            )}
+            }
           </ScrollView>
-        </View>
-
-        <View style={styles.percentage}>
-          <Text>Percentage</Text>
         </View>
       </ImageBackground>
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -226,7 +184,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    borderBottomWidth: 1,
   },
   addToDo: {
     backgroundColor: toDoTheme.addToDoBox,

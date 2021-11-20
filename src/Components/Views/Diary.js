@@ -33,6 +33,10 @@ export default function Diary(){
   const [dailyLog, setDailyLog] = useState({});
   const [todaySave, setTodaySave] = useState(false);
 
+  useEffect(() => {
+    loadLogs();
+  }, []);
+
   const today = new Date();
   const month = today.getMonth();
   const date = today.getDate();
@@ -40,10 +44,6 @@ export default function Diary(){
   const onChangeText = (payload) => setText(payload);
   const onChangeMood = (sticker) => setMood(sticker);
   const dismissKeyboard = () => Keyboard.dismiss();
-
-  useEffect(() => {
-    loadLogs();
-  }, []);
 
   const saveLog = async(toSave) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
