@@ -133,10 +133,11 @@ export default function ToDo(){
                   isChecked={toDos[key].checked}
                   onPress={() => handleCheck(key)}
                   size={20}
+                  text={toDos[key].text}
+                  textStyle={{ color: "black" }}
                   iconStyle={{ borderColor: "black" }}
                   fillColor="black"
                   />
-                <Text style={{ ...styles.toDoText, marginHorizontal: 10}}>{toDos[key].text}</Text>
                 <View style={styles.icons}>
                   <TouchableOpacity
                     onPress={() => deleteToDo(key)}

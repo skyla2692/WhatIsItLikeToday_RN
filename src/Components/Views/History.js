@@ -44,13 +44,13 @@ export default function History(){
       <ImageBackground source={IMGBG} style={styles.image}>
         <ScrollView contentContainerStyle={styles.logBox}>
           {dailyLog && Object.keys(dailyLog).map((key) =>
-            <TouchableOpacity key={key} style={styles.dailyLog}>
+            <View key={key} style={styles.dailyLog}>
               <View style={styles.dayAndMoodBox}>
                 <Text style={styles.logDay}>{key.substring(4, 15)}</Text>
                 <FontAwesome5 name={moods[dailyLog[key].mood]} size={17} color="black"/>
               </View>
               <Text style={styles.logText}>{dailyLog[key].diary}</Text>
-            </TouchableOpacity>
+            </View>
           )}
         </ScrollView>
       </ImageBackground>

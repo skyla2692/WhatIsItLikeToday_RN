@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Weather_ToDo_App",
-    "slug": "Weather_ToDo_App",
+    "name": "What is it Like Today",
+    "slug": "whatisitlike_rnapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/skyla2692/WhatIsItLikeToday_RN"
   }
 }
