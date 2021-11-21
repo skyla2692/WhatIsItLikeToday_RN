@@ -58,7 +58,8 @@ export default function Weather() {
     const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metric`)
     const json = await response.json();
 
-    setDays(json.daily);
+    const newDay = json.daily;
+    setDays(newDay.slice(1));
 
     const currentArr = [];
     currentArr.push(json.current);
@@ -67,12 +68,6 @@ export default function Weather() {
     const hour = json.hourly;
     hour.splice(12);
     setHours(hour);
-  };
-
-  const manageWeekData = () => {
-    const newDay = days;
-    delete newDay[0];
-    setDays(newDay);
   };
 
   return (
@@ -112,7 +107,6 @@ export default function Weather() {
                   </View>
               </View>
             </View>
-
             <View style={styles.hourBox}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hourly}>
                 {hours.map((hour, index) =>

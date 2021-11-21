@@ -30,7 +30,7 @@ export default function App() {
           }}
         />
         <Tab.Screen
-          name="My To Do list is like"
+          name="My To Do List is like"
           component={ ToDo }
           options={{
             tabBarLabel: "To Do",
@@ -40,7 +40,7 @@ export default function App() {
           }}
         />
         <Tab.Screen
-          name="My day was like"
+          name="My Day was like"
           component={ Diary }
           options={{
             tabBarLabel: "Diary",
@@ -50,7 +50,7 @@ export default function App() {
           }}
           />
         <Tab.Screen
-          name="My month looks like"
+          name="My Log History looks like"
           component={ History }
           options={{
             tabBarLabel: "Personal Log",

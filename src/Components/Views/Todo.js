@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ImageBackground, Alert, Dimensions, TextInput, 
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import IMGBG from '../../Images/ToDoBg.jpg';
 import { toDoTheme } from '../ThemeColor';
-import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -214,13 +214,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-  },
-
-  percentage: {
-    flex: 0.8,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    //backgroundColor: "teal",
   },
 });

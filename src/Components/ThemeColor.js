@@ -18,3 +18,7 @@ export const toDoTheme = {
     editIcon: "#000000",    // black
     toDoBg: "#FFFFFF",  // white
 };
+
+export const historyTheme = {
+    historyBg: "#FFFFFF",  // white
+};
