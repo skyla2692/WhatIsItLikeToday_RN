@@ -52,8 +52,13 @@ export default function Weather() {
 
     const { coords : { latitude, longitude }} = await Location.getCurrentPositionAsync({ accuracy: 5 });
     const location = await Location.reverseGeocodeAsync({ latitude, longitude }, { useGoogleMaps: false });
-
-    setCity(location[0].city);
+    
+    if(location[0].city === null){
+      setCity(location[0].region);
+    }
+    else{
+      setCity(location[0].city);
+    };
 
     const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metric`)
     const json = await response.json();
@@ -80,8 +85,7 @@ export default function Weather() {
       <View style={styles.container2}>
         <ImageBackground source={IMGBG} style={styles.image}>
           <View style={styles.city}>
-            <Text style={styles.cityText}>Current City : </Text>
-            <Text style={styles.cityName}>{city}</Text>
+            <Text style={styles.cityText}>Current City : {city}</Text>
           </View>
 
           <View style={styles.weather}>
@@ -174,10 +178,6 @@ const styles = StyleSheet.create({
   cityText: {
     fontSize: 25,
     fontWeight: "500",
-  },
-  cityName: {
-    fontSize: 26,
-    fontWeight: "600",
   },
 
   weather: {
