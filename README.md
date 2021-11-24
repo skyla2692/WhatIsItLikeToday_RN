@@ -6,7 +6,7 @@ This is an application with four functions.
 3. Daily Log for a day with a sticker to show your mood of the day. <br>
 4. History of your diary and mood sticker. <br>
 
-## Document Citations (Click on the word to check the link)
+## Document Citations
 
 ### Weather Page
 - [Weather_API](https://openweathermap.org/api/one-call-api) <br>
