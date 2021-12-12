@@ -19,3 +19,10 @@ This is an application with four functions.
 - [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) <br>
 - Background Images : [Unsplash](https://unsplash.com/) <br>
 - Icons : [@expo/vector-icons](https://icons.expo.fyi/) <br>
+
+
+## Description
+## Environment
+## Prerequisite
+## Files
+## Usage
